@@ -22,21 +22,21 @@ def draw_line_plot():
     """
     # Create a figure and axis
     fig, ax = plt.subplots(figsize=(12, 6))
-    
+
     # Plot the data
     ax.plot(df.index, df['value'], color='r', linewidth=1)
-    
+
     # Set titles and labels
     ax.set_title('Daily freeCodeCamp Forum Page Views 5/2016-12/2019')
     ax.set_xlabel('Date')
     ax.set_ylabel('Page Views')
-    
+
     # Adjust layout for better spacing
     fig.tight_layout()
-    
+
     # Save the figure
     fig.savefig('line_plot.png')
-    
+
     return fig
 
 def draw_bar_plot():
@@ -48,31 +48,31 @@ def draw_bar_plot():
     df_bar['year'] = df_bar.index.year
     df_bar['month'] = df_bar.index.month
     df_bar_grouped = df_bar.groupby(['year', 'month'])['value'].mean().unstack()
-    
+
     # Create a figure
     fig, ax = plt.subplots(figsize=(12, 8))
-    
+
     # Plot the bar chart
     df_bar_grouped.plot(kind='bar', ax=ax)
-    
+
     # Set legend with month names
     ax.legend(title='Months', labels=[
         'January', 'February', 'March', 'April', 'May', 'June', 
         'July', 'August', 'September', 'October', 'November', 'December'
     ])
-    
+
     # Set titles and labels
     ax.set_xlabel('Years')
     ax.set_ylabel('Average Page Views')
     ax.set_title('Average Daily Page Views per Month')
-    
+
     # Adjust layout
     fig.tight_layout()
-    
+
     # Save the figure
     fig.savefig('bar_plot.png')
-    
     return fig
+
 
 def draw_box_plot():
     """
@@ -85,29 +85,28 @@ def draw_box_plot():
     df_box['month'] = df_box['date'].dt.strftime('%b')
     df_box['month_num'] = df_box['date'].dt.month
     df_box = df_box.sort_values('month_num')
-    
+
     # Explicitly cast to float to avoid issues with deprecated np.float
     df_box['value'] = df_box['value'].astype(float)
-    
+
     # Create a figure with two subplots
     fig, axes = plt.subplots(1, 2, figsize=(15, 6))
-    
+
     # Year-wise box plot (Trend)
     sns.boxplot(x='year', y='value', data=df_box, ax=axes[0])
     axes[0].set_title('Year-wise Box Plot (Trend)')
     axes[0].set_xlabel('Year')
     axes[0].set_ylabel('Page Views')
-    
+
     # Month-wise box plot (Seasonality)
     sns.boxplot(x='month', y='value', data=df_box, ax=axes[1])
     axes[1].set_title('Month-wise Box Plot (Seasonality)')
     axes[1].set_xlabel('Month')
     axes[1].set_ylabel('Page Views')
-    
+
     # Adjust layout
     fig.tight_layout()
-    
+
     # Save the figure
-    fig.savefig('box_plot.png')
-    
+    fig.savefig('box_plot.png')    
     return fig
